@@ -20,8 +20,7 @@ jobs:
           python-version-file: ".python-version"
 
       - name: Install dependencies
-        run: |
-          uv pip install -r dev-requirements.lock
+        run: uv sync --all-extras
 
       - name: Run ruff format check
         run: uv run ruff check .
@@ -42,8 +41,7 @@ jobs:
           python-version-file: ".python-version"
 
       - name: Install dependencies
-        run: |
-          uv pip install -r dev-requirements.lock
+        run: uv sync --all-extras
 
       - name: Run pyright
         run: uv run pyright

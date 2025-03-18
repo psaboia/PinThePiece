@@ -19,11 +19,18 @@ jobs:
         with:
           python-version-file: ".python-version"
 
+      - name: Create virtual environment
+        run: uv venv
+
       - name: Install dependencies
-        run: uv pip install -r uv.lock
+        run: |
+          source .venv/bin/activate
+          uv pip install -r uv.lock
 
       - name: Run ruff format check
-        run: uv run ruff check .
+        run: |
+          source .venv/bin/activate
+          uv run ruff check .
 
   typecheck:
     runs-on: ubuntu-latest
@@ -40,8 +47,15 @@ jobs:
         with:
           python-version-file: ".python-version"
 
+      - name: Create virtual environment
+        run: uv venv
+
       - name: Install dependencies
-        run: uv pip install -r uv.lock
+        run: |
+          source .venv/bin/activate
+          uv pip install -r uv.lock
 
       - name: Run pyright
-        run: uv run pyright
+        run: |
+          source .venv/bin/activate
+          uv run pyright

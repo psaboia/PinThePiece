@@ -9,6 +9,13 @@ dependencies = [
     "uvicorn>=0.27.0",
     "fastapi>=0.110.0",
 ]
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.3.0",
+    "pyright>=1.1.350",
+]
+
 [[project.authors]]
 name = "Priscila Saboia Moreira"
 email = "priscilasaboia@gmail.com"
@@ -19,4 +26,17 @@ build-backend = "hatchling.build"
 
 [project.scripts]
 pinthepiece = "pinthepiece:main"
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+
+[tool.ruff.lint]
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "B",  # flake8-bugbear
+]
 

@@ -11,6 +11,8 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v4
 
@@ -34,11 +36,17 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     if: github.event_name == 'release' && github.event.action == 'published'
+    environment:
+      name: pypi
+      url: https://pypi.org/p/pinthepiece
     permissions:
-      id-token: write  # IMPORTANT: this permission is mandatory for trusted publishing
-    
+      contents: read
+      id-token: write  # REQUIRED for trusted publishing
+
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -56,9 +64,20 @@ jobs:
       - name: Check distribution
         run: twine check dist/*
 
+      - name: Verify tag version matches package version
+        run: |
+          PKG_VERSION=$(python setup.py --version)
+          TAG_VERSION=${GITHUB_REF#refs/tags/v}
+          if [ "$PKG_VERSION" != "$TAG_VERSION" ]; then
+            echo "Package version ($PKG_VERSION) does not match tag version ($TAG_VERSION)"
+            exit 1
+          fi
+
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@v1.8.11
         with:
           verbose: true
           print-hash: true
-          skip-existing: true 
+          verify-metadata: true
+          skip-existing: false  # Fail if version exists to prevent version conflicts
+          repository-url: https://upload.pypi.org/legacy/ 

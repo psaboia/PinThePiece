@@ -25,7 +25,7 @@ jobs:
           uv pip install --system -e ".[dev]"
 
       - name: Run ruff format check
-        run: uv pip run ruff check .
+        run: uv run ruff check .
 
   typecheck:
     runs-on: ubuntu-latest
@@ -48,4 +48,4 @@ jobs:
           uv pip install --system -e ".[dev]"
 
       - name: Run pyright
-        run: uv pip run pyright
+        run: uv run pyright

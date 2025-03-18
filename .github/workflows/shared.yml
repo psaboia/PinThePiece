@@ -20,7 +20,9 @@ jobs:
           python-version-file: ".python-version"
 
       - name: Install dependencies
-        run: uv pip install -e ".[dev]"
+        run: |
+          uv venv
+          uv pip install --system -e ".[dev]"
 
       - name: Run ruff format check
         run: uv pip run ruff check .
@@ -41,7 +43,9 @@ jobs:
           python-version-file: ".python-version"
 
       - name: Install dependencies
-        run: uv pip install -e ".[dev]"
+        run: |
+          uv venv
+          uv pip install --system -e ".[dev]"
 
       - name: Run pyright
         run: uv pip run pyright
